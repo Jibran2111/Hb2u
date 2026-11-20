@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>For Rodela</title>
+<style>
+:root {
+--bg: #0f0b14;
+--card: #1a1322;
+--border: rgba(235, 189, 118, 0.25);
+--gold: #ebbd76;
+--rose: #ee92a4;
+--text: #f7f1f5;
+--muted: #9e8fa3;
+}
+
+• {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+-webkit-tap-highlight-color: transparent;
+}
+
+body {
+background: radial-gradient(circle at center, #1c1326 0%, var(--bg) 80%);
+color: var(--text);
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 20px;
+}
+
+.card {
+width: 100%;
+max-width: 440px;
+min-height: 330px;
+max-height: 80vh;
+background: var(--card);
+border: 1px solid var(--border);
+border-radius: 26px;
+padding: 34px 26px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+text-align: center;
+cursor: pointer;
+user-select: none;
+box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+transition: transform 0.14s ease, border-color 0.3s ease;
+overflow-y: auto;
+}
+
+.card:active {
+transform: scale(0.985);
+border-color: var(--rose);
+}
+
+.display-text {
+font-size: 1.56rem;
+font-weight: 600;
+line-height: 1.48;
+color: var(--text);
+transition: opacity 0.18s ease;
+word-break: break-word;
+}
+
+.display-text.highlight {
+color: var(--gold);
+}
+
+.love-stack {
+font-size: 1.24rem;
+font-weight: 600;
+line-height: 1.65;
+color: var(--rose);
+}
+
+.tap-hint {
+margin-top: 24px;
+font-size: 0.76rem;
+letter-spacing: 1.2px;
+text-transform: uppercase;
+color: var(--muted);
+opacity: 0.75;
+transition: opacity 0.3s ease;
+}
+</style>
+</head>
+<body>
+
+<div class="card" id="story-card" onclick="nextSlide()">
+<div id="text-box" class="display-text highlight">Happy Birthday, Rodela 🌸</div>
+<div id="hint" class="tap-hint">Tap the card</div>
+</div>
+
+<script>
+// 1. MAIN CONVERSATION (Centered on her, her peace, her dance, her care)
+const mainSlides = [
+"Happy Birthday, Rodela 🌸",
+"No rush to reply or carry anything heavy today—just take a slow breath 🤍",
+"This little space is here for whenever you get two quiet minutes to yourself ✨",
+"Even when days around you are strict or quiet, you never have to force a mood here 🌙",
+"The grace and focus you put into classical dance stay with you in every step ❤️",
+"There’s a quiet beauty in how you move and hold poise even off the stage 🪷",
+"And in the warmth you put into making food from scratch for the people around you 🥟",
+"Whether it’s a warm paratha, momos, or something homemade, your care always shines through 🍯",
+"You carry tight rules and busy days with a gentleness that’s rare to see 🌿",
+"Please take care of yourself, eat well, and look after your health too 🍵🤍",
+"You deserve calm mornings, good rest, and days that don’t weigh you down 🌤️",
+"Happy Birthday my dear Rodela—today belongs to you 🎂✨"
+ ];
+
+// 2. EASTER EGG CONVERSATION (If she keeps tapping past the ending)
+const easterEggSlides = [
+"Oh… still tapping? 👀✨",
+"Since you stayed a little longer, here’s a small secret tucked in the back 🤫",
+"Even when you only get a tiny window to slip away and call, those moments mean so much 📞💫",
+"You deserve moments where nothing feels rushed and you can just smile freely 😊🌷"
+ ];
+
+// 3. WISHES FOR HER NEW YEAR + SWEET LINES BEFORE THE FINALE
+const newYearWishes = [
+"Wishing you a really bright year ahead, Rodela 🌟",
+"May everything go smoothly for you and fall into place right on time 🌈",
+"May this year give you more room to breathe, dance, and be yourself 🕊️",
+"May your health stay strong, your mind stay light, and your days feel kinder 🌻",
+"May every dream you hold quietly in your heart get closer this year ✨",
+"And one thing is certain—you will always have the person you want to be with 🤍🕯️",
+"Nothing can rush what’s meant for you, and you never have to walk that road alone 🌸"
+ ];
+
+// 4. VARIED "I LOVE YOU" FINALE
+const loveVariations = [
+"I love you ❤️",
+"I love you so much 💕",
+"I love you more than anything ✨",
+"You deserve the most love in the world 🌹",
+"I love you endlessly, Rodela 🤍",
+"I love you more with every passing day 💖",
+"You mean the world to me—I love you 🌸",
+"I love you deeply, today and always 🕯️"
+ ];
+
+const allSlides = [
+...mainSlides,
+...easterEggSlides,
+...newYearWishes
+ ];
+
+let index = 0;
+let loveStep = 0;
+const shownLoveLines = [];
+
+const textBox = document.getElementById("text-box");
+const hint = document.getElementById("hint");
+
+function getNextLoveLine() {
+if (loveStep === 0) {
+loveStep++;
+return loveVariations[0];
+}
+const pool = loveVariations.slice(1);
+const lastLine = shownLoveLines[shownLoveLines.length - 1];
+const candidates = pool.filter(line => line !== lastLine);
+const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+loveStep++;
+return chosen;
+}
+
+function nextSlide() {
+index++;
+textBox.style.opacity = 0;
+
+setTimeout(() => {
+if (index < allSlides.length) {
+textBox.className = "display-text";
+if (index === mainSlides.length || index === mainSlides.length + easterEggSlides.length) {
+textBox.classList.add("highlight");
+}
+textBox.textContent = allSlides[index];
+
+if (index === mainSlides.length - 1 || index === mainSlides.length + easterEggSlides.length - 1) {
+hint.textContent = "Tap again…?";
+hint.style.opacity = 0.65;
+} else {
+hint.style.opacity = 0;
+}
+} else {
+textBox.className = "display-text love-stack";
+shownLoveLines.push(getNextLoveLine());
+textBox.innerHTML = shownLoveLines.join("<br>");
+hint.style.opacity = 0;
+
+const card = document.getElementById("story-card");
+card.scrollTop = card.scrollHeight;
+}
+
+textBox.style.opacity = 1;
+}, 140);
+}
+</script>
+</body>
+</html>
